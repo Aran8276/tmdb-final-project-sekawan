@@ -9,18 +9,15 @@ import { Link } from "react-router-dom";
 import { Input } from "../ui/input";
 import { routeLists } from "@/Routes";
 import { ModeToggle } from "../ModeToggle";
+import ApplicationLogo from "../ApplicationLogo";
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-      <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        <Link
-          to="#"
-          className="flex items-center gap-2 text-lg font-semibold md:text-base"
-        >
-          <Clapperboard className="h-6 w-6" />
-          <span className="sr-only">Acme Inc</span>
-        </Link>
+    <header className="sticky z-10 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+      <div className="pl-12 w-48">
+        <ApplicationLogo />
+      </div>
+      <nav className="pl-8 hidden flex-col md:space-x-12 gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         {routeLists.map((item, index) => {
           return (
             <Link
