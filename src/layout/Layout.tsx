@@ -6,7 +6,7 @@ export default function Layout(props: { children: ReactNode }) {
   return (
     <>
       <Navbar />
-      <main className="p-8 min-h-screen">{props.children}</main>
+      <main className="min-h-screen">{props.children}</main>
       <Footer />
     </>
   );
