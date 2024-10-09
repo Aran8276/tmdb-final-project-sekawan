@@ -8,24 +8,21 @@ import {
   CarouselNext,
 } from "./ui/carousel";
 import { Search } from "@/types/Search";
+import GenreCover from "./GenreCover";
+import { Genre } from "@/types/Genre";
 
 interface SelfProps {
-  data: Search;
+  data: Genre | undefined;
 }
 
-export default function MovieCarousel(props: SelfProps) {
+export default function GenreCarousel(props: SelfProps) {
   return (
     <Carousel className="w-full">
       <CarouselContent className="w-[350px]">
-        {props.data?.results.map((item, index) => {
+        {props.data?.genres.map((item, index) => {
           return (
-            <CarouselItem className="">
-              <MovieCover
-                key={index}
-                title={item.title ? item.title : ""}
-                description={item.overview}
-                img={imgBaseUrl + item.poster_path}
-              />
+            <CarouselItem className="cursor-pointer">
+              <GenreCover key={index} name={item.name} id={item.id} />
             </CarouselItem>
           );
         })}

@@ -3,7 +3,6 @@ import { Popular } from "@/types/Popular";
 import { TopRated } from "@/types/TopRated";
 import { Upcoming } from "@/types/Upcoming";
 import { Video } from "@/types/Video";
-import { Movie } from "../reducers/homeReducer";
 
 export const SET_NOW_PLAYING = "SET_NOW_PLAYING";
 export const SET_POPULAR = "SET_POPULAR";

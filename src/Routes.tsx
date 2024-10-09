@@ -1,15 +1,25 @@
 import { ReactNode } from "react";
-import HomePage from "./pages/Home/HomePage";
+import HomePage from "./pages/Home/Home";
 import Favorite from "./pages/Favorite";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import MyList from "./pages/MyList";
+import List from "./pages/List/List";
 
 export interface RouteList {
   label: string;
   href: string;
   element: ReactNode;
 }
+
+export const weekdays = [
+  "Minggu",
+  "Senin",
+  "Selasa",
+  "Rabu",
+  "Kamis",
+  "Jum'at",
+  "Sabtu",
+];
 
 // Public Constants
 export const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
@@ -29,27 +39,17 @@ export const getTrailerSrcById = (id: string) => {
 
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  const weekdays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
   const months = [
-    "January",
-    "February",
-    "March",
+    "Januari",
+    "Februari",
+    "Maret",
     "April",
-    "May",
-    "June",
-    "July",
-
-    "August",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
     "September",
-    "October",
+    "Oktober",
     "November",
     "December",
   ];
@@ -57,27 +57,20 @@ export const formatDate = (dateString: string) => {
   const dayOfWeek = weekdays[date.getDay()];
   const month = months[date.getMonth()];
   const dayOfMonth = date.getDate();
+  const year = date.getFullYear();
 
-  const ordinalSuffix = (day: number) => {
-    if (day > 3 && day < 21) return "th"; // Covers 11th to 13th
-    switch (day % 10) {
-      case 1:
-        return "st";
-      case 2:
-        return "nd";
-      case 3:
-        return "rd";
-      default:
-        return "th";
-    }
-  };
-  return `${dayOfWeek}, ${month} ${dayOfMonth}${ordinalSuffix(dayOfMonth)}`;
+  return `${dayOfWeek}, ${dayOfMonth} ${month}, ${year}`;
 };
 export const routeLists: RouteList[] = [
   {
     label: "Beranda",
     href: "/",
     element: <HomePage />,
+  },
+  {
+    label: "Film",
+    href: "/list",
+    element: <List />,
   },
   {
     label: "Favorit",
@@ -93,10 +86,5 @@ export const routeLists: RouteList[] = [
     label: "Kontak",
     href: "/contact",
     element: <Contact />,
-  },
-  {
-    label: "Daftar",
-    href: "/list",
-    element: <MyList />,
   },
 ];
