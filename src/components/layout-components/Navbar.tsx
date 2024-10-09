@@ -3,15 +3,28 @@ import {
   Search,
   /* Sheet */
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 // import { SheetContent, SheetTrigger } from "../ui/sheet";
 // import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { routeLists } from "@/Routes";
 import { ModeToggle } from "../ModeToggle";
 import ApplicationLogo from "../ApplicationLogo";
+import SearchContext from "@/context/Search";
+import { ChangeEvent, useContext, useEffect } from "react";
 
 export default function Navbar() {
+  const [page, setPage] = useSearchParams();
+  const context = useContext(SearchContext);
+  if (!context) {
+    throw new Error("useContext must be used within a SearchContext Provider");
+  }
+  const { setSearch } = context;
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    setPage({ query: e.target.value, page: "1" });
+  };
   return (
     <header className="sticky z-10 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <div className="pl-12 w-48">
@@ -81,9 +94,10 @@ export default function Navbar() {
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              type="search"
+              type="searchString"
               placeholder="Cari film..."
               className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+              onChange={(e) => handleSearch(e)}
             />
           </div>
         </form>
