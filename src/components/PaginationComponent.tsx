@@ -6,6 +6,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import SearchContext from "@/context/Search";
+import { useContext, useEffect } from "react";
 import { SetURLSearchParams } from "react-router-dom";
 
 interface SelfProps {
@@ -16,6 +18,11 @@ interface SelfProps {
 }
 
 export default function PaginationComponent(props: SelfProps) {
+  const context = useContext(SearchContext);
+  if (!context) {
+    throw new Error("useContext must be used within a SearchContext Provider");
+  }
+  const { searchString } = context;
   const getPaginationItems = (steps: number, current: number) => {
     const totalPages = props.max || steps + current;
     const start = Math.max(1, current - 2);
@@ -25,6 +32,8 @@ export default function PaginationComponent(props: SelfProps) {
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
+
+    window.scrollTo(0, 0);
     return pages;
   };
 
@@ -36,7 +45,10 @@ export default function PaginationComponent(props: SelfProps) {
             className="cursor-pointer select-none"
             onClick={() => {
               if (props.current > 1) {
-                props.pageHandler({ page: (props.current - 1).toString() });
+                props.pageHandler({
+                  query: searchString,
+                  page: (props.current - 1).toString(),
+                });
               }
             }}
           />
@@ -46,7 +58,12 @@ export default function PaginationComponent(props: SelfProps) {
           <PaginationItem key={index}>
             <PaginationLink
               className="cursor-pointer select-none"
-              onClick={() => props.pageHandler({ page: page.toString() })}
+              onClick={() =>
+                props.pageHandler({
+                  query: searchString,
+                  page: page.toString(),
+                })
+              }
               isActive={page === props.current}
             >
               {page}
@@ -59,7 +76,10 @@ export default function PaginationComponent(props: SelfProps) {
             className="cursor-pointer select-none"
             onClick={() => {
               if (props.current < (props.max || props.steps)) {
-                props.pageHandler({ page: (props.current + 1).toString() });
+                props.pageHandler({
+                  query: searchString,
+                  page: (props.current + 1).toString(),
+                });
               }
             }}
           />

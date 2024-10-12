@@ -1,8 +1,6 @@
 import GenreCarousel from "@/components/GenreCarousel";
-import GenreCover from "@/components/GenreCover";
 import MovieCover from "@/components/MovieCover";
 import PaginationComponent from "@/components/PaginationComponent";
-import { weekdays } from "@/Routes";
 import { Genre } from "@/types/Genre";
 import { Search } from "@/types/Search";
 import { SetURLSearchParams } from "react-router-dom";
@@ -27,11 +25,12 @@ export default function ListView(props: SelfProps) {
           Daftar Semua Film (Sortir Trending: {weekdays[new Date().getDay()]})
         </h2> */}
         <div className="flex justify-center">
-          <div className="grid grid-cols-5 gap-6">
+          <div className="grid grid-cols-4 gap-6">
             {props.data ? (
               props.data.results.map((item, index) => {
                 return (
                   <MovieCover
+                    to={"/movie/" + item.id}
                     key={index}
                     title={item.title}
                     description={item.overview}

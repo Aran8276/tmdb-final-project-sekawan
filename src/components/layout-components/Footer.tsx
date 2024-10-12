@@ -1,21 +1,17 @@
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900 border-t-[1px]">
+    <footer className="bg-white dark:bg-background border-t-[1px]">
       <div className="container p-6 mx-auto">
         <div className="lg:flex">
           <div className="w-full -mx-6 lg:w-2/5">
             <div className="px-6">
               <a href="#">
-                <img
-                  className="w-auto h-7"
-                  src="https://merakiui.com/images/full-logo.svg"
-                  alt=""
-                />
+                <img className="w-auto h-7" src="/vite.svg" alt="" />
               </a>
 
               <p className="max-w-sm mt-2 text-gray-500 dark:text-gray-400">
                 Website React.js Database Film Menggunakan Shadcn, MerakiUI,
-                TailwindCSS dibuat oleh Aran8276
+                Pagedone.io, TailwindCSS dibuat oleh Aran8276
               </p>
 
               <div className="flex mt-6 -mx-2">

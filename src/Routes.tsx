@@ -23,9 +23,11 @@ export const weekdays = [
 
 // Public Constants
 export const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-export const imgBaseUrl = import.meta.env.VITE_IMG_BASE_URL;
+export const imgBaseUrlPoster = import.meta.env.VITE_IMG_BASE_URL + "/w500";
+export const imgBaseUrlFull = import.meta.env.VITE_IMG_BASE_URL + "/original";
 export const baseUrl = import.meta.env.VITE_API_BASE_URL;
 export const apiKey = import.meta.env.VITE_TMDB_API_KEY;
+export const verifyURL = import.meta.env.VITE_API_VERIFY_TOKEN_URL;
 export const requestHeader = {
   headers: {
     Accept: "application/json",
@@ -37,7 +39,7 @@ export const getTrailerSrcById = (id: string) => {
   return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}`;
 };
 
-export const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string, hasDate?: boolean) => {
   const date = new Date(dateString);
   const months = [
     "Januari",
@@ -59,7 +61,10 @@ export const formatDate = (dateString: string) => {
   const dayOfMonth = date.getDate();
   const year = date.getFullYear();
 
-  return `${dayOfWeek}, ${dayOfMonth} ${month}, ${year}`;
+  if (hasDate) {
+    return `${dayOfWeek}, ${dayOfMonth} ${month}, ${year}`;
+  }
+  return `${dayOfMonth} ${month}, ${year}`;
 };
 export const routeLists: RouteList[] = [
   {
@@ -87,4 +92,9 @@ export const routeLists: RouteList[] = [
     href: "/contact",
     element: <Contact />,
   },
+  // {
+  //   label: "Test",
+  //   href: "/test",
+  //   element: <Test />,
+  // },
 ];
