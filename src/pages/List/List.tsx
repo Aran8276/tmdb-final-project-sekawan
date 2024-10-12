@@ -79,6 +79,10 @@ export default function List() {
   }, []);
 
   useEffect(() => {
+    if (searchString) {
+      fetchSearch(searchString, handlePage);
+      return;
+    }
     fetchTrending(handlePage);
   }, [page]);
 

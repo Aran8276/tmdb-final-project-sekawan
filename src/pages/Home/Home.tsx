@@ -133,6 +133,7 @@ export default function HomePage() {
   }, [isFetched]);
   useEffect(() => {
     console.log(data);
+    console.log(data.movie?.video);
   }, [data]);
 
   return <HomeView data={data} />;

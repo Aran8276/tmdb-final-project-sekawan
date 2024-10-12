@@ -18,11 +18,12 @@ export default function SearchView(props: SelfProps) {
           Hasil Pencarian Film: {props.searchString}
         </h2>
         <div className="flex justify-center">
-          <div className="grid grid-cols-5 gap-6">
+          <div className="grid grid-cols-4 gap-6">
             {props.data ? (
               props.data.results.map((item, index) => {
                 return (
                   <MovieCover
+                    to={"/movie/" + item.id}
                     key={index}
                     title={item.title}
                     description={item.overview}
@@ -40,7 +41,7 @@ export default function SearchView(props: SelfProps) {
           <PaginationComponent
             current={props.currentPage}
             // Walaupun ditemukan 1000 halaman: "Invalid page: Pages start at 1 and max at 500. They are expected to be an integer."
-            max={500}
+            max={props.data?.total_pages}
             steps={3}
             pageHandler={props.pageHandler}
           />

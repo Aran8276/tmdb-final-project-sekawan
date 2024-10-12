@@ -1,4 +1,4 @@
-import { imgBaseUrl } from "@/Routes";
+import { imgBaseUrlPoster } from "@/Routes";
 import MovieCover from "./MovieCover";
 import {
   Carousel,
@@ -22,9 +22,10 @@ export default function MovieCarousel(props: SelfProps) {
             <CarouselItem className="">
               <MovieCover
                 key={index}
+                to={"/movie/" + item.id}
                 title={item.title ? item.title : ""}
                 description={item.overview}
-                img={imgBaseUrl + item.poster_path}
+                img={imgBaseUrlPoster + item.poster_path}
               />
             </CarouselItem>
           );

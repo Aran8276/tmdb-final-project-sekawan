@@ -1,5 +1,3 @@
-import { imgBaseUrl } from "@/Routes";
-import MovieCover from "./MovieCover";
 import {
   Carousel,
   CarouselContent,
@@ -7,9 +5,9 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "./ui/carousel";
-import { Search } from "@/types/Search";
 import GenreCover from "./GenreCover";
 import { Genre } from "@/types/Genre";
+import { Link } from "react-router-dom";
 
 interface SelfProps {
   data: Genre | undefined;
@@ -21,9 +19,11 @@ export default function GenreCarousel(props: SelfProps) {
       <CarouselContent className="w-[350px]">
         {props.data?.genres.map((item, index) => {
           return (
-            <CarouselItem className="cursor-pointer">
-              <GenreCover key={index} name={item.name} id={item.id} />
-            </CarouselItem>
+            <Link to={`/list/genre/${item.id}`}>
+              <CarouselItem className="w-[348px] cursor-pointer">
+                <GenreCover key={index} name={item.name} id={item.id} />
+              </CarouselItem>
+            </Link>
           );
         })}
       </CarouselContent>

@@ -12,6 +12,7 @@ import { ModeToggle } from "../ModeToggle";
 import ApplicationLogo from "../ApplicationLogo";
 import SearchContext from "@/context/Search";
 import { ChangeEvent, useContext, useEffect } from "react";
+import { Button } from "../ui/button";
 
 export default function Navbar() {
   const [page, setPage] = useSearchParams();
@@ -36,7 +37,7 @@ export default function Navbar() {
             <Link
               key={index}
               to={item.href}
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground"
             >
               {item.label}
             </Link>
@@ -102,6 +103,9 @@ export default function Navbar() {
           </div>
         </form>
         <ModeToggle />
+        <Link to="/link">
+          <Button variant="outline">Masuk</Button>
+        </Link>
       </div>
     </header>
   );
