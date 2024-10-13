@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
 import HomePage from "./pages/Home/Home";
-import Favorite from "./pages/Favorite";
+import Favorite from "./pages/Favorite/Favorite";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import List from "./pages/List/List";
+import RatedList from "./pages/RatedList/RatedList";
 
 export interface RouteList {
   label: string;
@@ -81,6 +82,11 @@ export const routeLists: RouteList[] = [
     label: "Favorit",
     href: "/favorites",
     element: <Favorite />,
+  },
+  {
+    label: "Ulasan",
+    href: "/rated",
+    element: <RatedList />,
   },
   {
     label: "Tentang",

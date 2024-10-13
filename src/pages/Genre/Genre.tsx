@@ -69,9 +69,7 @@ export default function Genre() {
     }
   }, [page]);
 
-  useEffect(() => {
-    console.log(data);
-  }, [isFetched]);
+  useEffect(() => {}, [isFetched]);
 
   return (
     <GenreView

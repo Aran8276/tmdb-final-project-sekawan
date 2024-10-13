@@ -9,7 +9,7 @@ import { useState } from "react";
 import Genre from "./pages/Genre/Genre";
 import NotFound from "./pages/Errors/NotFound";
 import MovieDetail from "./pages/Detail/MovieDetail";
-import LinkTMDB from "./pages/Auth/LinkTMDB";
+// import LinkTMDB from "./pages/Auth/LinkTMDB";
 
 function App() {
   const [searchString, setSearch] = useState("");
@@ -32,7 +32,7 @@ function App() {
                   );
                 })}
                 {/*Generate manual utk yg tidak ada di navbar */}
-                <Route path="/link" element={<LinkTMDB />} />
+                {/* <Route path="/link" element={<LinkTMDB />} /> */}
                 <Route path="/list/genre/:id" element={<Genre />} />
                 <Route path="/movie/:id" element={<MovieDetail />} />
                 <Route path="/*" element={<NotFound />} />

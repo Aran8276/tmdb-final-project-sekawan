@@ -1,7 +1,7 @@
 import { ListState } from "@/store/reducers/listReducer";
 import ListView from "./ListView";
 import { useDispatch, useSelector } from "react-redux";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { baseUrl, requestHeader } from "@/Routes";
 import { setData, setGenre } from "@/store/actions/listAction";
 import axios from "axios";
@@ -50,25 +50,30 @@ export default function List() {
     }
   };
 
-  const fetchSearch = async (query: string, page?: number) => {
-    try {
-      if (page) {
+  const fetchSearch = useCallback(
+    async (query: string, page?: number) => {
+      try {
+        if (page) {
+          const res = await axios.get(
+            baseUrl +
+              `/search/movie?query=${query}&page=${page}&include_adult=false`,
+            requestHeader
+          );
+          dispatch(setData(res.data));
+          return;
+        }
         const res = await axios.get(
-          baseUrl +
-            `/search/movie?query=${query}&page=${page}&include_adult=false`,
+          baseUrl + `/search/movie?query=${query}&include_adult=false`,
           requestHeader
         );
         dispatch(setData(res.data));
         return;
+      } catch (error: any) {
+        console.log(error.message);
       }
-      const res = await axios.get(
-        baseUrl + `/search/movie?query=${query}&include_adult=false`,
-        requestHeader
-      );
-      dispatch(setData(res.data));
-      return;
-    } catch (error) {}
-  };
+    },
+    [searchString]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,12 +93,10 @@ export default function List() {
 
   useEffect(() => {
     if (isFetched) {
-      console.log(data);
     }
   }, [isFetched]);
 
   useEffect(() => {
-    console.log(`printed from list: ${searchString}`);
     if (searchString == "") {
       fetchTrending();
       return;
