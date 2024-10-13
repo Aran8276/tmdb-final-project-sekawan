@@ -3,6 +3,7 @@ import { homeReducer } from "./reducers/homeReducer";
 import { listReducer } from "./reducers/listReducer";
 import { genreReducer } from "./reducers/genreReducer";
 import { detailReducer } from "./reducers/detailReducer";
+import { linkReducer } from "./reducers/linkReducer";
 
 const state = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const state = configureStore({
     list: listReducer,
     genre: genreReducer,
     detail: detailReducer,
+    link: linkReducer,
   },
 });
 

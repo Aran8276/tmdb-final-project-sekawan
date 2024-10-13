@@ -31,6 +31,16 @@ interface SelfProps {
   video: Result[] | undefined;
   collection: Collection | undefined;
   similar: Similar | undefined;
+  isFavorite: boolean;
+  rating: number;
+  isRated: boolean;
+  handleDelete: (id: number) => void;
+  handleFavorite: (id: number | undefined, action: "add" | "delete") => void;
+  handleRating: (
+    id: number | undefined,
+    action: "add" | "delete",
+    value?: number
+  ) => void;
 }
 
 export default function MovieDetailView(props: SelfProps) {
@@ -76,15 +86,55 @@ export default function MovieDetailView(props: SelfProps) {
                 {props.data?.overview}
               </p>
               <div className="self-center pt-4">
-                <Rating
-                  rating={Math.round(
-                    props.data?.vote_average ? props.data?.vote_average : 0
-                  )}
-                  maxRating={10}
-                />
+                {props.isRated ? (
+                  <Rating
+                    handleRating={props.handleRating}
+                    movieId={props.data ? props.data?.id : 0}
+                    rating={Math.round(props.rating)}
+                    isRatedByUser
+                    maxRating={10}
+                  />
+                ) : (
+                  <Rating
+                    handleRating={props.handleRating}
+                    movieId={props.data ? props.data?.id : 0}
+                    rating={Math.round(
+                      props.data?.vote_average ? props.data?.vote_average : 0
+                    )}
+                    maxRating={10}
+                  />
+                )}
               </div>
-              <div className="flex flex-col mt-6 space-y-3 lg:space-y-0 lg:flex-row">
-                <Button variant="outline">Tambah ke Favorit</Button>
+              <div className="flex flex-col mt-6 space-y-3 lg:space-x-3 lg:space-y-0 lg:flex-row">
+                {props.isFavorite ? (
+                  <Button
+                    onClick={() =>
+                      props.handleFavorite(props.data?.id, "delete")
+                    }
+                    variant="destructive"
+                  >
+                    Hapus dari Favorit
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => props.handleFavorite(props.data?.id, "add")}
+                    variant="outline"
+                  >
+                    Tambah ke Favorit
+                  </Button>
+                )}
+                {props.isRated ? (
+                  <Button
+                    onClick={() =>
+                      props.handleDelete(props.data ? props.data.id : 0)
+                    }
+                    className="bg-yellow-600 hover:bg-yellow-500 transition-transform"
+                  >
+                    Hapus Rating
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>

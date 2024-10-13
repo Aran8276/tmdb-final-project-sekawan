@@ -4,6 +4,9 @@ import { Similar } from "@/types/Similar";
 import {
   SET_COLLECTION_DATA,
   SET_DETAIL_DATA,
+  SET_IS_FAVORITE,
+  SET_IS_RATED,
+  SET_RATING,
   SET_SIMILAR_DATA,
   SET_VIDEO_DATA,
 } from "../actions/detailAction";
@@ -14,6 +17,9 @@ export interface DetailDataState {
   collection: Collection | undefined;
   similar: Similar | undefined;
   video: Video | undefined;
+  isFavorite: boolean;
+  rating: number;
+  isRated: boolean;
 }
 
 interface Action {
@@ -26,6 +32,9 @@ const initialState: DetailDataState = {
   collection: undefined,
   similar: undefined,
   video: undefined,
+  isFavorite: false,
+  rating: 0,
+  isRated: false,
 };
 
 export const detailReducer = (state = initialState, action: Action) => {
@@ -52,6 +61,24 @@ export const detailReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         video: action.payload,
+      };
+
+    case SET_IS_FAVORITE:
+      return {
+        ...state,
+        isFavorite: action.payload,
+      };
+
+    case SET_RATING:
+      return {
+        ...state,
+        rating: action.payload,
+      };
+
+    case SET_IS_RATED:
+      return {
+        ...state,
+        isRated: action.payload,
       };
 
     default:

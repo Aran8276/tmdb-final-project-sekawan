@@ -15,6 +15,7 @@ interface SelfProps {
   current: number;
   pageHandler: SetURLSearchParams;
   max?: number;
+  noQuery?: boolean;
 }
 
 export default function PaginationComponent(props: SelfProps) {
@@ -45,6 +46,12 @@ export default function PaginationComponent(props: SelfProps) {
             className="cursor-pointer select-none"
             onClick={() => {
               if (props.current > 1) {
+                if (props.noQuery) {
+                  props.pageHandler({
+                    page: (props.current - 1).toString(),
+                  });
+                  return;
+                }
                 props.pageHandler({
                   query: searchString,
                   page: (props.current - 1).toString(),
@@ -58,12 +65,18 @@ export default function PaginationComponent(props: SelfProps) {
           <PaginationItem key={index}>
             <PaginationLink
               className="cursor-pointer select-none"
-              onClick={() =>
+              onClick={() => {
+                if (props.noQuery) {
+                  props.pageHandler({
+                    page: page.toString(),
+                  });
+                  return;
+                }
                 props.pageHandler({
                   query: searchString,
                   page: page.toString(),
-                })
-              }
+                });
+              }}
               isActive={page === props.current}
             >
               {page}
@@ -75,7 +88,13 @@ export default function PaginationComponent(props: SelfProps) {
           <PaginationNext
             className="cursor-pointer select-none"
             onClick={() => {
-              if (props.current < (props.max || props.steps)) {
+              if (props.noQuery) {
+                if (props.current < (props.max || props.steps)) {
+                  props.pageHandler({
+                    page: (props.current + 1).toString(),
+                  });
+                  return;
+                }
                 props.pageHandler({
                   query: searchString,
                   page: (props.current + 1).toString(),

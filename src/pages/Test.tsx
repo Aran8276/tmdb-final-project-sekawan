@@ -6,7 +6,7 @@
 //   const [inputan, setInputan] = useState("");
 
 //   useEffect(() => {
-//     console.log("Data telah diganti");
+//
 //   }, [inputan]);
 //
 //  return <></>

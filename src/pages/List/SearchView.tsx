@@ -40,7 +40,6 @@ export default function SearchView(props: SelfProps) {
         <div className="float-end mr-8 pt-6">
           <PaginationComponent
             current={props.currentPage}
-            // Walaupun ditemukan 1000 halaman: "Invalid page: Pages start at 1 and max at 500. They are expected to be an integer."
             max={props.data?.total_pages}
             steps={3}
             pageHandler={props.pageHandler}

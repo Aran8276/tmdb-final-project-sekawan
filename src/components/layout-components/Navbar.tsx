@@ -1,5 +1,6 @@
 import {
-  Clapperboard,
+  Menu,
+  Package2,
   Search,
   /* Sheet */
 } from "lucide-react";
@@ -13,6 +14,7 @@ import ApplicationLogo from "../ApplicationLogo";
 import SearchContext from "@/context/Search";
 import { ChangeEvent, useContext, useEffect } from "react";
 import { Button } from "../ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 export default function Navbar() {
   const [page, setPage] = useSearchParams();
@@ -20,6 +22,7 @@ export default function Navbar() {
   if (!context) {
     throw new Error("useContext must be used within a SearchContext Provider");
   }
+
   const { setSearch } = context;
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +47,7 @@ export default function Navbar() {
           );
         })}
       </nav>
-      {/* <Sheet>
+      <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
@@ -89,7 +92,7 @@ export default function Navbar() {
             </Link>
           </nav>
         </SheetContent>
-      </Sheet> */}
+      </Sheet>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <form className="ml-auto flex-1 sm:flex-initial">
           <div className="relative">
@@ -103,9 +106,9 @@ export default function Navbar() {
           </div>
         </form>
         <ModeToggle />
-        <Link to="/link">
+        {/* <Link to="/link">
           <Button variant="outline">Masuk</Button>
-        </Link>
+        </Link> */}
       </div>
     </header>
   );
