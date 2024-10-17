@@ -4,7 +4,6 @@ import { baseUrl, requestHeader, verifyURL } from "@/Routes";
 import axios from "axios";
 import { Token } from "@/types/Token";
 import { useDispatch, useSelector } from "react-redux";
-import { LinkDataState } from "@/store/reducers/linkReducer";
 import {
   setHasError,
   setHasToken,

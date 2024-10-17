@@ -1,16 +1,6 @@
 import Rating from "@/components/Rating";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
   Carousel,
   CarouselContent,
   CarouselItem,
@@ -24,7 +14,6 @@ import { formatDate, imgBaseUrlFull, imgBaseUrlPoster } from "@/Routes";
 import { Collection } from "@/types/Collection";
 import { Similar } from "@/types/Similar";
 import HorizontalMovieCard from "@/components/HorizontalMovieCard";
-import MovieCover from "@/components/MovieCover";
 
 interface SelfProps {
   data: MovieDetailType | undefined;

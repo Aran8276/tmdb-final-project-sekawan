@@ -7,7 +7,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import SearchContext from "@/context/Search";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { SetURLSearchParams } from "react-router-dom";
 
 interface SelfProps {

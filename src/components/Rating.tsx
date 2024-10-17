@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Star from "./Star";
 import { useDispatch } from "react-redux";
 import { setIsRated, setRating } from "@/store/actions/detailAction";
