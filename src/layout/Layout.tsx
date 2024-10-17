@@ -1,6 +1,6 @@
 import Footer from "@/components/layout-components/Footer";
 import Navbar from "@/components/layout-components/Navbar";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Toaster } from "sonner";
 
 export default function Layout(props: { children: ReactNode }) {

@@ -12,11 +12,12 @@ import { routeLists } from "@/Routes";
 import { ModeToggle } from "../ModeToggle";
 import ApplicationLogo from "../ApplicationLogo";
 import SearchContext from "@/context/Search";
-import { ChangeEvent, useContext, useEffect } from "react";
+import { ChangeEvent, useContext } from "react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 export default function Navbar() {
+  //@ts-ignore
   const [page, setPage] = useSearchParams();
   const context = useContext(SearchContext);
   if (!context) {
