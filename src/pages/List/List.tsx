@@ -1,24 +1,23 @@
 import { ListState } from "@/store/reducers/listReducer";
 import ListView from "./ListView";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { baseUrl, requestHeader } from "@/Routes";
 import { setData, setGenre } from "@/store/actions/listAction";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import SearchView from "./SearchView";
-import SearchContext from "@/context/Search";
 
 export default function List() {
-  const context = useContext(SearchContext);
-  if (!context) {
-    throw new Error("useContext must be used within a SearchContext Provider");
-  }
-  const { searchString } = context;
+  // const context = useContext(SearchContext);
+  // if (!context) {
+  //   throw new Error("useContext must be used within a SearchContext Provider");
+  // }
   const data: ListState = useSelector((state: any) => state.list);
   const dispatch = useDispatch();
   const [page, setPage] = useSearchParams();
   const [isFetched, setIsFetched] = useState(false);
+  const searchString = page.get("query");
   const handlePage = page.get("page") ? Number(page.get("page")) : 1;
 
   const fetchGenres = async () => {
@@ -50,30 +49,27 @@ export default function List() {
     }
   };
 
-  const fetchSearch = useCallback(
-    async (query: string, page?: number) => {
-      try {
-        if (page) {
-          const res = await axios.get(
-            baseUrl +
-              `/search/movie?query=${query}&page=${page}&include_adult=false`,
-            requestHeader
-          );
-          dispatch(setData(res.data));
-          return;
-        }
+  const fetchSearch = async (query: string, page?: number) => {
+    try {
+      if (page) {
         const res = await axios.get(
-          baseUrl + `/search/movie?query=${query}&include_adult=false`,
+          baseUrl +
+            `/search/movie?query=${query}&page=${page}&include_adult=false`,
           requestHeader
         );
         dispatch(setData(res.data));
         return;
-      } catch (error: any) {
-        console.log(error.message);
       }
-    },
-    [searchString]
-  );
+      const res = await axios.get(
+        baseUrl + `/search/movie?query=${query}&include_adult=false`,
+        requestHeader
+      );
+      dispatch(setData(res.data));
+      return;
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,17 +92,17 @@ export default function List() {
     }
   }, [isFetched]);
 
-  useEffect(() => {
-    if (searchString == "") {
-      fetchTrending();
-      return;
-    }
-    fetchSearch(searchString);
-  }, [searchString]);
+  // useEffect(() => {
+  //   if (searchString == "") {
+  //     fetchTrending();
+  //     return;
+  //   }
+  //   fetchSearch(searchString);
+  // }, [searchString]);
 
   return page.get("query") ? (
     <SearchView
-      searchString={searchString}
+      searchString={searchString ? searchString : ""}
       pageHandler={setPage}
       currentPage={handlePage}
       data={data.data}

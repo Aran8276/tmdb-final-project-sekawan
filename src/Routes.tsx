@@ -27,7 +27,6 @@ export const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 export const imgBaseUrlPoster = import.meta.env.VITE_IMG_BASE_URL + "/w500";
 export const imgBaseUrlFull = import.meta.env.VITE_IMG_BASE_URL + "/original";
 export const baseUrl = import.meta.env.VITE_API_BASE_URL;
-export const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 export const verifyURL = import.meta.env.VITE_API_VERIFY_TOKEN_URL;
 export const requestHeader = {
   headers: {

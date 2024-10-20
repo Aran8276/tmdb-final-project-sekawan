@@ -40,7 +40,7 @@ export default function MovieDetailView(props: SelfProps) {
         className="object-cover absolute top-0 w-screen h-screen"
         alt={props.data?.title}
       />
-      <section className="py-12 mx-24">
+      <section className="pb-12 pt-32 mx-24">
         <div className="container backdrop-blur-sm bg-black rounded-xl bg-opacity-50 scale-[1.10] flex flex-col px-6 py-4 mx-auto space-y-6 lg:h-[32rem] lg:py-16 lg:flex-row lg:space-x-12 lg:items-center">
           <div className="flex items-center justify-center w-full h-96 lg:w-1/2">
             <Carousel className="scale-[0.87] w-[560px]">
@@ -129,7 +129,7 @@ export default function MovieDetailView(props: SelfProps) {
           </div>
         </div>
       </section>
-      <section className="flex justify-center py-12 mx-24">
+      <section className="flex justify-center pt-48 pb-12 mx-24">
         <Tabs defaultValue="detail" className="w-full">
           <TabsList
             className={`grid w-full ${

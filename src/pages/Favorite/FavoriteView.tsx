@@ -12,7 +12,7 @@ interface SelfProps {
 
 export default function FavoriteView(props: SelfProps) {
   return (
-    <div className="flex flex-col p-8">
+    <div className="flex flex-col px-8 pb-8 pt-32">
       <section>
         <h2 className="font-bold pb-12 text-4xl">Film Favorit</h2>
         <div className="flex justify-center">

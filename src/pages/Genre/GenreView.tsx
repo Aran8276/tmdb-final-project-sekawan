@@ -14,7 +14,7 @@ interface SelfProps {
 
 export default function GenreView(props: SelfProps) {
   return (
-    <div className="flex flex-col py-12 space-y-12">
+    <div className="flex flex-col pb-12 pt-32 space-y-12">
       <section className="flex justify-center">
         <div className="flex-col">
           <h2 className="font-bold pb-12 text-4xl">Kategori: {props.label}</h2>

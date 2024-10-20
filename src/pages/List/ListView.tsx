@@ -14,7 +14,7 @@ interface SelfProps {
 
 export default function ListView(props: SelfProps) {
   return (
-    <div className="flex flex-col space-y-16 p-8">
+    <div className="flex flex-col space-y-16 px-8 pb-8 pt-32">
       <section>
         <div className="flex justify-center mx-24">
           <GenreCarousel data={props.genres} />
