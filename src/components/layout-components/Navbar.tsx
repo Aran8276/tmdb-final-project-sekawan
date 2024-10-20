@@ -1,42 +1,200 @@
 import {
-  Menu,
-  Package2,
+  ArrowRight,
+  ChevronDown,
+  Heart,
   Search,
+  Star,
+  Telescope,
   /* Sheet */
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
-// import { SheetContent, SheetTrigger } from "../ui/sheet";
-// import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { routeLists } from "@/Routes";
+import { baseUrl, imgBaseUrlPoster, requestHeader } from "@/Routes";
 import { ModeToggle } from "../ModeToggle";
-import ApplicationLogo from "../ApplicationLogo";
 import SearchContext from "@/context/Search";
-import { ChangeEvent, useContext } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "../ui/dropdown-menu";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import axios from "axios";
+import { Result } from "@/types/Search";
+import HorizontalMovieCard from "../HorizontalMovieCard";
 
 export default function Navbar() {
+  const [data, setData] = useState<Result[]>([]);
   //@ts-ignore
   const [page, setPage] = useSearchParams();
   const context = useContext(SearchContext);
+  const [isTop, setIsTop] = useState(true);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsTop(window.scrollY === 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchSearch(search);
+  }, [search]);
+
   if (!context) {
     throw new Error("useContext must be used within a SearchContext Provider");
   }
 
-  const { setSearch } = context;
+  const fetchSearch = useCallback(
+    async (query: string) => {
+      try {
+        const res = await axios.get(
+          baseUrl + `/search/movie?query=${query}&include_adult=false`,
+          requestHeader
+        );
+        setData(res.data.results);
+        return;
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    },
+    [search]
+  );
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    setPage({ query: e.target.value, page: "1" });
-  };
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   return (
-    <header className="sticky z-10 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-      <div className="pl-12 w-48">
-        <ApplicationLogo />
-      </div>
-      <nav className="pl-8 hidden flex-col md:space-x-12 gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        {routeLists.map((item, index) => {
+    <header
+      className={`text-white transition-all dark:text-white fixed flex w-full justify-between top-0 px-12 items-center pt-6 pb-5 z-10 ${
+        isTop ? "" : "backdrop-blur-md"
+      }`}
+    >
+      <section>
+        <nav className="hidden flex-col md:space-x-4 gap-6 text-lg font-light md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+          <Link
+            to="/"
+            className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground"
+          >
+            Beranda
+          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex space-x-3 items-center text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground">
+              <span>Film</span>
+              <ChevronDown className="size-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="relative top-3">
+              <Link to="/list">
+                <DropdownMenuItem className="flex space-x-3 items-center cursor-pointer">
+                  <Telescope className="size-4" />
+                  <span>Jelajah</span>
+                </DropdownMenuItem>
+              </Link>
+              <Link to="/favorites">
+                <DropdownMenuItem className="flex space-x-3 items-center cursor-pointer">
+                  <Heart className="size-4" />
+                  <span>Favorit</span>
+                </DropdownMenuItem>
+              </Link>
+              <Link to="/rated">
+                <DropdownMenuItem className="flex space-x-3 items-center cursor-pointer">
+                  <Star className="size-4" />
+                  <span>Daftar Ulas</span>
+                </DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </nav>
+      </section>
+      <section>
+        <h1 className="font-semibold text-2xl">Movie Sekawan</h1>
+      </section>
+      <section>
+        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+          <Dialog
+            onOpenChange={(open: boolean) => {
+              if (!open) {
+                setData([]);
+              }
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button
+                className="bg-transparent border-0"
+                variant="outline"
+                size="icon"
+              >
+                <Search className="absolute h-[1.2rem] w-[1.2rem] transition-all" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="[&>button]:hidden bg-transparent border-0 shadow-none">
+              <div className="relative">
+                <div className="flex space-y-4 flex-col">
+                  <form action={`/list?query=${search}&page=1`} method="GET">
+                    <div className="relative">
+                      <Search className="absolute left-2.5 top-[0.7rem] h-4 w-4 text-muted-foreground" />
+                      <Input
+                        name="query"
+                        type="searchString"
+                        placeholder="Cari film..."
+                        className="pl-10 w-full transition-all"
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
+                  </form>
+                  {data.length > 0 ? (
+                    <div className="bg-background rounded-lg w-full p-4">
+                      <div className="flex flex-col space-y-3">
+                        {data.slice(0, 4).map((item, index) => {
+                          return (
+                            <HorizontalMovieCard
+                              key={index}
+                              title={item.title}
+                              to={`/movie/${item.id}`}
+                              img={imgBaseUrlPoster + item.poster_path}
+                              description={item.overview}
+                              growOnHover
+                              isForSearch
+                            />
+                          );
+                        })}
+                      </div>
+                      <Link to={`/list?query=${search}&page=1`}>
+                        <DialogClose className="flex items-center space-x-3 float-right px-4 pt-6">
+                          <span>See more results</span>
+                          <ArrowRight />
+                        </DialogClose>
+                      </Link>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+          <ModeToggle />
+        </div>
+      </section>
+    </header>
+  );
+}
+
+/*
+      <nav className="pl-8 hidden flex-col md:space-x-12 gap-6 text-lg font-light md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+        {/* {routeLists.map((item, index) => {
           return (
             <Link
               key={index}
@@ -46,9 +204,21 @@ export default function Navbar() {
               {item.label}
             </Link>
           );
-        })}
-      </nav>
-      <Sheet>
+        })} */
+//   <Link className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground">
+//     Movie
+//   </Link>
+//   <Link className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground">
+//     New & Popular
+//   </Link>
+// </nav>
+
+// <span>Logo Here</span>
+
+{
+  /* <Sheet>
+
+  
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
@@ -93,24 +263,39 @@ export default function Navbar() {
             </Link>
           </nav>
         </SheetContent>
-      </Sheet>
-      <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <form className="ml-auto flex-1 sm:flex-initial">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="searchString"
-              placeholder="Cari film..."
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-              onChange={(e) => handleSearch(e)}
-            />
-          </div>
-        </form>
-        <ModeToggle />
-        {/* <Link to="/link">
+      </Sheet> */
+}
+// <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+//   <form className="ml-auto flex-1 sm:flex-initial">
+//     <div className="relative">
+//       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+//       <Input
+//         type="searchString"
+//         placeholder="Cari film..."
+//         className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+//         onChange={(e) => handleSearch(e)}
+//       />
+//     </div>
+//   </form>
+//   <ModeToggle />
+{
+  /* <Link to="/link">
           <Button variant="outline">Masuk</Button>
-        </Link> */}
-      </div>
-    </header>
-  );
+        </Link> */
+}
+{
+  /* </div> */
+  /*
+  {routeLists.map((item, index) => {
+    return (
+      <Link
+        key={index}
+        to={item.href}
+        className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground"
+      >
+        {item.label}
+      </Link>
+    );
+  })}{" "}
+  */
 }

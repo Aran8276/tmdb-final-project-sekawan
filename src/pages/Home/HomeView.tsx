@@ -1,9 +1,11 @@
 import MovieCarousel from "@/components/MovieCarousel";
-import { formatDate, getTrailerSrcById } from "@/Routes";
+import { getTrailerSrcById } from "@/Routes";
 import { HomeState } from "@/store/reducers/homeReducer";
-import { EllipsisVertical, Plus, Popcorn } from "lucide-react";
+import { Plus, Popcorn } from "lucide-react";
 import { availabilityHandler } from "./Home";
 import { Link } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface SelfProps {
   data: HomeState;
@@ -11,104 +13,111 @@ interface SelfProps {
 
 export default function HomeView(props: SelfProps) {
   return (
-    <div className="flex flex-col pb-12">
-      <section className="relative flex-col border-2 bottom-10 overflow-clip">
+    <div className="flex flex-col overflow-clip">
+      <section className="relative flex-col overflow-clip">
         {props.data.video ? (
           <iframe
-            width="1280"
-            height="640"
-            src={getTrailerSrcById(props.data.video?.results[0].key)}
-            // src={getTrailerSrcById("bXIenI02HhU")}
-            // src={getTrailerSrcById("chltnmUN5ZI")}
-            // src={getTrailerSrcById("q5PPNZiu52w")}
-            // src={getTrailerSrcById("0uOkigs9hnY")}
-            className="top-0 bottom-0 w-full scale-[1.2]"
+            width="1920"
+            height="1080"
+            src={getTrailerSrcById(
+              props.data.video?.results.length > 0
+                ? props.data.video?.results[0].key
+                : ""
+            )}
+            className="top-0 bottom-0 w-full scale-[1.75]"
           />
         ) : (
           <></>
         )}
-        <div className="absolute top-0 w-full h-full"></div>
-        <div className="absolute h-full top-0 mx-48 py-24">
-          <div className="flex flex-col space-y-2 w-[725px] text-white">
-            <h1 className="font-bold text-8xl tracking-wide">
-              {props.data.movie?.title}
-            </h1>
-            <div className="flex justify-between w-fit space-x-6 py-5 font-bold">
-              <p>{availabilityHandler(props.data.movie?.availability)}</p>
-              <EllipsisVertical />
-              {props.data.movie?.release_date ? (
-                <>
-                  <p>
-                    {props.data.movie.availability == "upcoming"
-                      ? formatDate(
-                          props.data.movie?.release_date?.toString() || "",
-                          true
-                        )
-                      : formatDate(
-                          props.data.movie?.release_date?.toString() || ""
-                        )}
-                  </p>
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
-            <div className="flex justify-between w-fit space-x-16 pt-8">
-              <Link to={"/movie/" + props.data.movie?.id}>
-                <button
-                  type="button"
-                  className="scale-125 flex space-x-3 py-2.5 px-6 text-sm rounded-lg bg-red-500 text-white cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-red-700"
+        <div className="flex justify-start items-center absolute top-0 bottom-0 right-0 left-0 w-full h-full">
+          <div className="pl-12 z-10">
+            <div className="flex flex-col pb-32 space-y-6 text-white">
+              <div className="pl-10">
+                <Badge
+                  className="font-normal border-0 bg-gray-500 scale-[1.75]"
+                  variant="outline"
                 >
-                  <Popcorn className="self-center" />
-                  <span className="self-center">Lihat Detail</span>
-                </button>
-              </Link>
-              <button
-                type="button"
-                className="scale-125 flex space-x-2 py-2.5 px-6 text-sm border border-gray-300 rounded-lg shadow-xs bg-white font-semibold text-gray-900 transition-all duration-500 hover:bg-gray-300"
-              >
-                <Plus className="self-center" />
-                <span className="self-center">Tambah ke Watchlist</span>
-              </button>
+                  {availabilityHandler(props.data.movie?.availability)}
+                </Badge>
+              </div>
+              <h1 className="text-7xl font-semibold">
+                {props.data.movie?.title}
+              </h1>
+              <p className="w-[600px] font-light line-clamp-3">
+                {props.data.movie?.overview}
+              </p>
+              <div className="flex space-x-3">
+                <Link to={`/movie/${props.data.movie?.id}`}>
+                  <Button
+                    className="flex items-center space-x-3 font-medium text-lg text-white bg-neutral-600 dark:bg-background"
+                    size="lg"
+                  >
+                    <Popcorn />
+                    <span>Lihat Detail</span>
+                  </Button>
+                </Link>
+
+                <Button
+                  className="flex items-center space-x-3 font-medium text-lg text-black bg-white"
+                  size="lg"
+                  variant="outline"
+                >
+                  <Plus />
+                  <span>Favorit</span>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
-      {/* <section className="text-white bg-[url('/galant.jpg')] bg-contain w-full h-[800px] p-16">
-          </section> */}
-      <section className="flex-col flex justify-center mx-48 py-12">
-        <h2 className="font-bold pb-12 text-4xl">Film Tayang</h2>
-        {props.data?.nowPlaying ? (
-          <MovieCarousel data={props.data.nowPlaying} />
-        ) : (
-          <span>Loading</span>
-        )}
+
+      <section className="relative h-[2400px] bg-transparent">
+        <div className="h-[2900px] relative bottom-[500px] bg-gradient-to-b from-transparent via-10% via-black to-black dark:via-background dark:to-background pl-12">
+          <div className="flex flex-col  space-y-12 relative top-[100px] bottom-0 left-0 right-0">
+            <section className="flex-col ml-12 mr-24 flex justify-center">
+              <h2 className="font-medium pb-12 relative right-12 text-4xl text-white">
+                Populer
+              </h2>
+              {props.data?.popular ? (
+                <MovieCarousel data={props.data.popular} />
+              ) : (
+                <span>Loading</span>
+              )}
+            </section>
+
+            <section className="flex-col ml-12 mr-24 flex justify-center">
+              <h2 className="font-medium pb-12 relative right-12 text-4xl text-white">
+                Tayang
+              </h2>
+              {props.data?.nowPlaying ? (
+                <MovieCarousel data={props.data.nowPlaying} />
+              ) : (
+                <span>Loading</span>
+              )}
+            </section>
+            <section className="flex-col ml-12 mr-24 flex justify-center">
+              <h2 className="font-medium pb-12 relative right-12 text-4xl text-white">
+                Akan Datang
+              </h2>
+              {props.data?.upcoming ? (
+                <MovieCarousel data={props.data.upcoming} />
+              ) : (
+                <span>Loading</span>
+              )}
+            </section>
+            <section className="flex-col ml-12 mr-24 flex justify-center">
+              <h2 className="font-medium pb-12 relative right-12 text-4xl text-white">
+                Top Rated
+              </h2>
+              {props.data?.topRated ? (
+                <MovieCarousel data={props.data.topRated} />
+              ) : (
+                <span>Loading</span>
+              )}
+            </section>
+          </div>
+        </div>
       </section>
-      <section className="flex-col flex justify-center mx-48 py-12">
-        <h2 className="font-bold pb-12 text-4xl">Film Populer</h2>
-        {props.data?.popular ? (
-          <MovieCarousel data={props.data.popular} />
-        ) : (
-          <span>Loading</span>
-        )}
-      </section>
-      <section className="flex-col flex justify-center mx-48 py-12">
-        <h2 className="font-bold pb-12 text-4xl">Film Top Rated</h2>
-        {props.data?.topRated ? (
-          <MovieCarousel data={props.data.topRated} />
-        ) : (
-          <span>Loading</span>
-        )}
-      </section>
-      <section className="flex-col flex justify-center mx-48 py-12">
-        <h2 className="font-bold pb-12 text-4xl">Film Akan Datang</h2>
-        {props.data?.upcoming ? (
-          <MovieCarousel data={props.data.upcoming} />
-        ) : (
-          <span>Loading</span>
-        )}
-      </section>
-      <div className="grid grid-cols-4 gap-4"></div>
     </div>
   );
 }
