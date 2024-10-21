@@ -36,6 +36,7 @@ function App() {
                 <Route path="/list/genre/:id" element={<Genre />} />
                 <Route path="/movie/:id" element={<MovieDetail />} />
                 <Route path="/*" element={<NotFound />} />
+                {/* <Route path="/test" element={<Test />} /> */}
               </Routes>
             </Layout>
           </ThemeProvider>
