@@ -8,7 +8,7 @@ import {
   CarouselNext,
 } from "./ui/carousel";
 import { Search } from "@/types/Search";
-import { delay, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface SelfProps {
   data: Search;
