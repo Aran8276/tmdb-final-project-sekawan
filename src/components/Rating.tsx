@@ -31,18 +31,20 @@ export default function Rating(props: SelfProps) {
   };
 
   return (
-    <div className="flex items-center gap-x-1">
-      {Array.from({ length: props.maxRating }, (_, index) => (
-        <Star
-          key={index}
-          isEmpty={
-            index >= (hoveredIndex !== null ? hoveredIndex + 1 : props.rating)
-          }
-          onMouseEnter={() => setHoveredIndex(index)}
-          onMouseLeave={() => setHoveredIndex(null)}
-          onMouseDown={handleMouseClick}
-        />
-      ))}
+    <div className="flex flex-col lg:flex-row lg:items-center gap-y-3 lg:gap-y-0 lg:gap-x-1">
+      <div className="flex gap-1">
+        {Array.from({ length: props.maxRating }, (_, index) => (
+          <Star
+            key={index}
+            isEmpty={
+              index >= (hoveredIndex !== null ? hoveredIndex + 1 : props.rating)
+            }
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onMouseDown={handleMouseClick}
+          />
+        ))}
+      </div>
       <p className="ml-2 text-sm font-medium text-white">
         {props.isRatedByUser ? (
           <span>

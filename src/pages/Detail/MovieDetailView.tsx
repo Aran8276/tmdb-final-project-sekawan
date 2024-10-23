@@ -37,12 +37,17 @@ export default function MovieDetailView(props: SelfProps) {
     <div className="flex justify-center flex-col space-y-4 w-screen">
       <img
         src={imgBaseUrlFull + props.data?.backdrop_path}
-        className="object-cover absolute top-0 w-screen h-screen"
+        className="hidden lg:block object-cover absolute top-0 w-screen h-screen"
         alt={props.data?.title}
       />
-      <section className="pb-12 pt-32 mx-24">
-        <div className="container backdrop-blur-sm bg-black rounded-xl bg-opacity-50 scale-[1.10] flex flex-col px-6 py-4 mx-auto space-y-6 lg:h-[32rem] lg:py-16 lg:flex-row lg:space-x-12 lg:items-center">
-          <div className="flex items-center justify-center w-full h-96 lg:w-1/2">
+      <section className="pb-12 pt-32 h-screen mx-24">
+        <div className="container backdrop-blur-sm bg-none lg:bg-black rounded-xl lg:bg-opacity-50 scale-[1.10] flex flex-col px-6 py-4 mx-auto space-y-6 lg:h-[32rem] lg:py-16 lg:flex-row lg:space-x-12 lg:items-center">
+          <img
+            className="scale-[1.7] rounded-xl lg:hidden"
+            src={imgBaseUrlFull + props.data?.backdrop_path}
+            alt={props.data?.title}
+          />
+          <div className="hidden lg:flex items-center justify-center w-full h-96 lg:w-1/2">
             <Carousel className="scale-[0.87] w-[560px]">
               <CarouselContent>
                 {props.video?.map((item, index) => {
@@ -71,7 +76,7 @@ export default function MovieDetailView(props: SelfProps) {
               <h2 className="text-3xl font-semibold text-white lg:text-4xl">
                 {props.data?.title}
               </h2>
-              <p className="mt-4 text-sm text-gray-300 lg:text-base">
+              <p className="mt-4 text-gray-300 text-sm">
                 {props.data?.overview}
               </p>
               <div className="self-center pt-4">
@@ -129,7 +134,7 @@ export default function MovieDetailView(props: SelfProps) {
           </div>
         </div>
       </section>
-      <section className="flex justify-center pt-48 pb-12 mx-24">
+      <section className="pt-[200px] lg:pt-0 lg:flex justify-center pb-12 mx-6 lg:mx-24">
         <Tabs defaultValue="detail" className="w-full">
           <TabsList
             className={`grid w-full ${
@@ -145,7 +150,7 @@ export default function MovieDetailView(props: SelfProps) {
             <TabsTrigger value="similar">Film Serupa</TabsTrigger>
           </TabsList>
           <TabsContent value="detail">
-            <div className="flex flex-col p-6 text-gray-500 dark:text-gray-200 bg-gray-100 dark:bg-slate-900 rounded-lg text-lg shadow-md">
+            <div className="flex flex-col p-6 text-gray-500 dark:text-gray-200 bg-gray-100 dark:bg-neutral-900 rounded-lg text-lg shadow-md">
               <p>
                 Tanggal Rilis:{" "}
                 {props.data?.release_date
@@ -198,7 +203,7 @@ export default function MovieDetailView(props: SelfProps) {
             </div>
           </TabsContent>
           <TabsContent value="collection">
-            <div className="flex p-6 text-gray-500 dark:text-gray-200 bg-gray-100 dark:bg-slate-900 rounded-lg text-lg shadow-md">
+            <div className="flex p-6 text-gray-500 dark:text-gray-200 bg-gray-100 dark:bg-neutral-900 rounded-lg text-lg shadow-md">
               <div className="flex space-x-12 w-full mx-4">
                 <img
                   className="h-[400px] rounded-xl"
@@ -232,7 +237,7 @@ export default function MovieDetailView(props: SelfProps) {
             </div>
           </TabsContent>
           <TabsContent value="similar">
-            <div className="grid grid-cols-1 p-12 gap-4 text-gray-500 dark:text-gray-200 bg-gray-100 dark:bg-slate-900 rounded-lg text-lg shadow-md">
+            <div className="grid grid-cols-1 p-12 gap-4 text-gray-500 dark:text-gray-200 bg-gray-100 dark:bg-neutral-900 rounded-lg text-lg shadow-md">
               {props.similar?.results.map((item, index) => {
                 return (
                   <HorizontalMovieCard
@@ -249,6 +254,7 @@ export default function MovieDetailView(props: SelfProps) {
           </TabsContent>
         </Tabs>
       </section>
+      <div className=""></div>
     </div>
   );
 }
