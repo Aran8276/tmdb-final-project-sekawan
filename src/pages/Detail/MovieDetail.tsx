@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MovieDetailView from "./MovieDetailView";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import { baseUrl, requestHeader } from "@/Routes";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,8 +30,10 @@ export default function MovieDetail() {
         requestHeader
       );
       dispatch(setDetailVideoData(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -39,8 +41,10 @@ export default function MovieDetail() {
     try {
       const res = await axios.get(baseUrl + "/movie/" + id, requestHeader);
       dispatch(setDetailData(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -51,8 +55,10 @@ export default function MovieDetail() {
         requestHeader
       );
       dispatch(setSimilarData(response.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -63,8 +69,10 @@ export default function MovieDetail() {
         requestHeader
       );
       dispatch(setCollectionData(response.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -88,8 +96,10 @@ export default function MovieDetail() {
       }
       dispatch(setIsRated(true));
       dispatch(setRating(filtered[0].rating));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -114,8 +124,10 @@ export default function MovieDetail() {
       }
       const res = await axios.post(url, { value: value }, requestHeader);
       console.log(res.data);
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -132,8 +144,10 @@ export default function MovieDetail() {
         return;
       }
       dispatch(setIsFavorite(true));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
   // addToFavorite(824817);
@@ -173,8 +187,10 @@ export default function MovieDetail() {
       toast.success("Film berhasil ditambahkan ke daftar Favorit");
       dispatch(setIsFavorite(true));
       return;
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 

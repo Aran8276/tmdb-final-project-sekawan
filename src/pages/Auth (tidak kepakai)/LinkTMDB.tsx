@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import LinkTMDBView from "./LinkTMDBView";
 import { baseUrl, requestHeader, verifyURL } from "@/Routes";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Token } from "@/types/Token";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -59,8 +59,10 @@ export default function LinkTMDB() {
       dispatch(setToken(JSON.stringify(res.data)));
       dispatch(setHasToken(true));
       dispatch(setSessionExpired(false));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import RatedListView from "./RatedListView";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { baseUrl, requestHeader } from "@/Routes";
 import { Favorite } from "@/types/Favorite";
 import { useSearchParams } from "react-router-dom";
@@ -17,8 +17,10 @@ export default function RatedList() {
         requestHeader
       );
       setData(res.data);
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 

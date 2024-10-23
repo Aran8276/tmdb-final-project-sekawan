@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { baseUrl, requestHeader } from "@/Routes";
 import { setGenreData, setGenreLabel } from "@/store/actions/genreAction";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { GenreDataState, GenreElement } from "@/types/Genre";
 
 export default function Genre() {
@@ -19,8 +19,10 @@ export default function Genre() {
     try {
       const res = await axios.get(baseUrl + "/genre/movie/list", requestHeader);
       dispatch(setGenreLabel(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -41,8 +43,10 @@ export default function Genre() {
         requestHeader
       );
       dispatch(setGenreData(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 

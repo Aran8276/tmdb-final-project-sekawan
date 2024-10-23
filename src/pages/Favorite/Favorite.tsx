@@ -1,6 +1,6 @@
 import { baseUrl, requestHeader } from "@/Routes";
 import FavoriteView from "./FavoriteView";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { Favorite as FavoriteType } from "@/types/Favorite";
 import { useSearchParams } from "react-router-dom";
@@ -17,8 +17,10 @@ export default function Favorite() {
         requestHeader
       );
       setData(res.data);
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 

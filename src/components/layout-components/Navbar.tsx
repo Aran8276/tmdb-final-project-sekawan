@@ -7,7 +7,7 @@ import {
   Telescope,
   /* Sheet */
 } from "lucide-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Input } from "../ui/input";
 import { baseUrl, imgBaseUrlPoster, requestHeader } from "@/Routes";
 import { ModeToggle } from "../ModeToggle";
@@ -32,8 +32,6 @@ import HorizontalMovieCard from "../HorizontalMovieCard";
 
 export default function Navbar() {
   const [data, setData] = useState<Result[]>([]);
-  //@ts-ignore
-  const [page, setPage] = useSearchParams();
   const context = useContext(SearchContext);
   const [isTop, setIsTop] = useState(true);
   const [search, setSearch] = useState("");

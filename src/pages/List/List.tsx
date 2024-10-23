@@ -1,10 +1,10 @@
 import { ListState } from "@/store/reducers/listReducer";
 import ListView from "./ListView";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { baseUrl, requestHeader } from "@/Routes";
 import { setData, setGenre } from "@/store/actions/listAction";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useSearchParams } from "react-router-dom";
 import SearchView from "./SearchView";
 
@@ -16,7 +16,6 @@ export default function List() {
   const data: ListState = useSelector((state: any) => state.list);
   const dispatch = useDispatch();
   const [page, setPage] = useSearchParams();
-  const [isFetched, setIsFetched] = useState(false);
   const searchString = page.get("query");
   const handlePage = page.get("page") ? Number(page.get("page")) : 1;
 
@@ -24,8 +23,10 @@ export default function List() {
     try {
       const res = await axios.get(baseUrl + "/genre/movie/list", requestHeader);
       dispatch(setGenre(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -44,8 +45,10 @@ export default function List() {
         requestHeader
       );
       dispatch(setData(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -66,15 +69,16 @@ export default function List() {
       );
       dispatch(setData(res.data));
       return;
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([fetchTrending(), fetchGenres()]);
-      setIsFetched(true);
     };
     fetchData();
   }, []);
@@ -86,11 +90,6 @@ export default function List() {
     }
     fetchTrending(handlePage);
   }, [page]);
-
-  useEffect(() => {
-    if (isFetched) {
-    }
-  }, [isFetched]);
 
   // useEffect(() => {
   //   if (searchString == "") {

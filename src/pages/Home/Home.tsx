@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { baseUrl, requestHeader } from "@/Routes";
 import { useEffect, useState } from "react";
@@ -45,8 +45,10 @@ export default function HomePage() {
         requestHeader
       );
       dispatch(setNowPlaying(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -55,8 +57,10 @@ export default function HomePage() {
       const res = await axios.get(baseUrl + "/movie/popular", requestHeader);
       // setData();
       dispatch(setPopular(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -64,8 +68,10 @@ export default function HomePage() {
     try {
       const res = await axios.get(baseUrl + "/movie/top_rated", requestHeader);
       dispatch(setTopRated(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -73,8 +79,10 @@ export default function HomePage() {
     try {
       const res = await axios.get(baseUrl + "/movie/upcoming", requestHeader);
       dispatch(setUpcoming(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
@@ -85,8 +93,10 @@ export default function HomePage() {
         requestHeader
       );
       dispatch(setVideo(res.data));
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
     }
   };
 
