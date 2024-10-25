@@ -23,11 +23,16 @@ export const weekdays = [
 ];
 
 // Public Constants
+export const str = window.localStorage;
+export const sessionKeyName = "session_id";
+export const sessionIdGetter = str.getItem(sessionKeyName);
 export const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 export const imgBaseUrlPoster = import.meta.env.VITE_IMG_BASE_URL + "/w500";
 export const imgBaseUrlFull = import.meta.env.VITE_IMG_BASE_URL + "/original";
 export const baseUrl = import.meta.env.VITE_API_BASE_URL;
 export const verifyURL = import.meta.env.VITE_API_VERIFY_TOKEN_URL;
+export const demoUser = import.meta.env.VITE_DEMO_USERNAME;
+export const demoPass = import.meta.env.VITE_DEMO_PASSWORD;
 export const requestHeader = {
   headers: {
     Accept: "application/json",

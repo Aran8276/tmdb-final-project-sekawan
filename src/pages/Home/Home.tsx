@@ -200,12 +200,11 @@ export default function HomePage() {
       };
       fetchVideo(randomMovie.id.toString());
       checkFavorite(randomMovie.id);
-      console.log("Check favorite + " + randomMovie.id);
+
       dispatch(setMovie(dataToStore));
       return;
     }
   }, [isFetched]);
-  useEffect(() => {}, [data]);
 
   return <HomeView handleFavorite={handleFavorite} data={data} />;
 }

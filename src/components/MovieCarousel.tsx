@@ -30,6 +30,7 @@ export default function MovieCarousel(props: SelfProps) {
         {props.data?.results.map((item, index) => {
           return (
             <motion.div
+              key={index}
               initial="hidden"
               viewport={{ once: true }}
               whileInView="visible"
@@ -38,7 +39,6 @@ export default function MovieCarousel(props: SelfProps) {
             >
               <CarouselItem className="">
                 <MovieCover
-                  key={index}
                   to={"/movie/" + item.id}
                   title={item.title ? item.title : ""}
                   description={item.overview}

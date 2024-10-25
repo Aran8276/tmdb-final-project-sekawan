@@ -1,4 +1,4 @@
-import { baseUrl, requestHeader } from "@/Routes";
+import { baseUrl, requestHeader, sessionIdGetter } from "@/Routes";
 import FavoriteView from "./FavoriteView";
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ export default function Favorite() {
   const fetchFavorites = async () => {
     try {
       const res = await axios.get(
-        baseUrl + "/account/null/favorite/movies",
+        baseUrl + `/account/null/favorite/movies?session_id=${sessionIdGetter}`,
         requestHeader
       );
       setData(res.data);

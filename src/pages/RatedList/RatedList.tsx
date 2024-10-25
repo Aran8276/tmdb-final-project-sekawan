@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RatedListView from "./RatedListView";
 import axios, { AxiosError } from "axios";
-import { baseUrl, requestHeader } from "@/Routes";
+import { baseUrl, requestHeader, sessionIdGetter } from "@/Routes";
 import { Favorite } from "@/types/Favorite";
 import { useSearchParams } from "react-router-dom";
 
@@ -13,7 +13,7 @@ export default function RatedList() {
   const fetchRated = async () => {
     try {
       const res = await axios.get(
-        baseUrl + "/account/null/rated/movies",
+        baseUrl + `/account/null/rated/movies?session_id=${sessionIdGetter}`,
         requestHeader
       );
       setData(res.data);
@@ -27,10 +27,6 @@ export default function RatedList() {
   useEffect(() => {
     fetchRated();
   }, []);
-
-  useEffect(() => {
-    console.log(data?.total_pages);
-  }, [data]);
 
   return (
     <RatedListView

@@ -73,8 +73,6 @@ export default function Genre() {
     }
   }, [page]);
 
-  useEffect(() => {}, [isFetched]);
-
   return (
     <GenreView
       maxPage={data?.data?.total_pages}

@@ -1,7 +1,9 @@
 import {
   ArrowRight,
   ChevronDown,
+  CircleUser,
   Heart,
+  LogOut,
   Search,
   Star,
   Telescope,
@@ -9,7 +11,14 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Input } from "../ui/input";
-import { baseUrl, imgBaseUrlPoster, requestHeader } from "@/Routes";
+import {
+  baseUrl,
+  imgBaseUrlPoster,
+  requestHeader,
+  sessionIdGetter,
+  sessionKeyName,
+  str,
+} from "@/Routes";
 import { ModeToggle } from "../ModeToggle";
 import SearchContext from "@/context/Search";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -19,6 +28,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
 } from "../ui/dropdown-menu";
 import {
   Dialog,
@@ -26,15 +36,18 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Result } from "@/types/Search";
 import HorizontalMovieCard from "../HorizontalMovieCard";
 import { motion } from "framer-motion";
+import { Account } from "@/types/Account";
 
 export default function Navbar() {
+  const [account, setAccount] = useState<Account | null>(null);
   const [data, setData] = useState<Result[]>([]);
   const context = useContext(SearchContext);
   const [isTop, setIsTop] = useState(true);
+  const [hasSessionId, setHasSessionId] = useState(false);
   const [search, setSearch] = useState("");
   const [darkBgInLight, setDarkBg] = useState(false);
   const location = useLocation();
@@ -43,6 +56,11 @@ export default function Navbar() {
     const handleScroll = () => {
       setIsTop(window.scrollY === 0);
     };
+
+    if (sessionIdGetter) {
+      setHasSessionId(true);
+      fetchAccount();
+    }
 
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -57,10 +75,6 @@ export default function Navbar() {
     }
     setDarkBg(false);
   }, [location]);
-
-  useEffect(() => {
-    console.log(darkBgInLight);
-  }, [darkBgInLight]);
 
   useEffect(() => {
     fetchSearch(search);
@@ -86,13 +100,29 @@ export default function Navbar() {
     [search]
   );
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const fetchAccount = async () => {
+    try {
+      const res = await axios.get(
+        baseUrl + `/account/null?session_id=${sessionIdGetter}`,
+        requestHeader
+      );
+      setAccount(res.data);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    str.removeItem(sessionKeyName);
+    window.location.replace("/login");
+  };
+
   return (
     <header
       className={
-        (darkBgInLight ? "text-white" : "text-black") +
+        (darkBgInLight ? "text-white" : "text-black dark:text-white") +
         ` transition-all fixed flex w-full justify-between top-0 px-12 items-center pt-6 pb-5 z-10 ${
           isTop ? "" : "backdrop-blur-md"
         }`
@@ -118,18 +148,24 @@ export default function Navbar() {
                   <span>Jelajah</span>
                 </DropdownMenuItem>
               </Link>
-              <Link to="/favorites">
-                <DropdownMenuItem className="flex space-x-3 items-center cursor-pointer">
-                  <Heart className="size-4" />
-                  <span>Favorit</span>
-                </DropdownMenuItem>
-              </Link>
-              <Link to="/rated">
-                <DropdownMenuItem className="flex space-x-3 items-center cursor-pointer">
-                  <Star className="size-4" />
-                  <span>Daftar Ulas</span>
-                </DropdownMenuItem>
-              </Link>
+              {hasSessionId ? (
+                <>
+                  <Link to="/favorites">
+                    <DropdownMenuItem className="flex space-x-3 items-center cursor-pointer">
+                      <Heart className="size-4" />
+                      <span>Favorit</span>
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link to="/rated">
+                    <DropdownMenuItem className="flex space-x-3 items-center cursor-pointer">
+                      <Star className="size-4" />
+                      <span>Daftar Ulas</span>
+                    </DropdownMenuItem>
+                  </Link>
+                </>
+              ) : (
+                <></>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
@@ -204,6 +240,38 @@ export default function Navbar() {
             </DialogContent>
           </Dialog>
           <ModeToggle />
+          {sessionIdGetter ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex space-x-3 items-center text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-white">
+                <Button
+                  className="bg-transparent border-0"
+                  variant="outline"
+                  size="icon"
+                >
+                  <CircleUser className="absolute h-[1.2rem] w-[1.2rem] transition-all" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="relative right-3">
+                <DropdownMenuLabel>
+                  Halo {account?.username} 👋
+                </DropdownMenuLabel>
+                <DropdownMenuItem
+                  onClick={() => handleLogout()}
+                  className="flex space-x-3 items-center cursor-pointer"
+                >
+                  <LogOut className="size-4" />
+                  <span>Keluar</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link
+              to="/login"
+              className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-white"
+            >
+              Masuk
+            </Link>
+          )}
         </div>
       </section>
     </header>

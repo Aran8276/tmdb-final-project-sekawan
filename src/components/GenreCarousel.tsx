@@ -19,9 +19,9 @@ export default function GenreCarousel(props: SelfProps) {
       <CarouselContent className="w-[350px]">
         {props.data?.genres.map((item, index) => {
           return (
-            <Link to={`/list/genre/${item.id}`}>
+            <Link key={index} to={`/list/genre/${item.id}`}>
               <CarouselItem className="w-[348px] cursor-pointer">
-                <GenreCover key={index} name={item.name} id={item.id} />
+                <GenreCover name={item.name} id={item.id} />
               </CarouselItem>
             </Link>
           );

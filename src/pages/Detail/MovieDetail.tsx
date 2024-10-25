@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import MovieDetailView from "./MovieDetailView";
 import axios, { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
-import { baseUrl, requestHeader } from "@/Routes";
+import { baseUrl, requestHeader, sessionIdGetter } from "@/Routes";
 import { useDispatch, useSelector } from "react-redux";
 import { DetailDataState } from "@/store/reducers/detailReducer";
 import {
@@ -85,7 +85,7 @@ export default function MovieDetail() {
   const checkRating = async (id: number) => {
     try {
       const res = await axios.get(
-        baseUrl + "/account/null/rated/movies",
+        baseUrl + `/account/null/rated/movies?session_id=${sessionIdGetter}`,
         requestHeader
       );
       const results = res.data.results;
@@ -103,7 +103,6 @@ export default function MovieDetail() {
     }
   };
 
-  // handleRating(1247458, "delete");
   const handleRating = async (
     id: number | undefined,
     action: "add" | "delete",
@@ -112,18 +111,17 @@ export default function MovieDetail() {
     if (!id) {
       return;
     }
-    const url = baseUrl + `/movie/${id}/rating`;
+    const url = baseUrl + `/movie/${id}/rating?session_id=${sessionIdGetter}`;
     try {
       if (action == "delete") {
         const res = await axios.delete(url, requestHeader);
-        console.log(res.data);
+
         return;
       }
       if (!value) {
         return;
       }
       const res = await axios.post(url, { value: value }, requestHeader);
-      console.log(res.data);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         console.log(error.message);
@@ -134,7 +132,7 @@ export default function MovieDetail() {
   const checkFavorite = async (id: number) => {
     try {
       const res = await axios.get(
-        baseUrl + "/account/null/favorite/movies",
+        baseUrl + `/account/null/favorite/movies?session_id=${sessionIdGetter}`,
         requestHeader
       );
       const results = res.data.results;
@@ -150,8 +148,6 @@ export default function MovieDetail() {
       }
     }
   };
-  // addToFavorite(824817);
-  // handleFavorite(824817, "add");
 
   const handleFavorite = async (
     id: number | undefined,
@@ -163,7 +159,7 @@ export default function MovieDetail() {
     try {
       if (action == "delete") {
         await axios.post(
-          baseUrl + "/account/null/favorite",
+          baseUrl + `/account/null/favorite?session_id=${sessionIdGetter}`,
           {
             media_id: id,
             media_type: "movie",
@@ -176,7 +172,7 @@ export default function MovieDetail() {
         return;
       }
       await axios.post(
-        baseUrl + "/account/null/favorite",
+        baseUrl + `/account/null/favorite?session_id=${sessionIdGetter}`,
         {
           media_id: id,
           media_type: "movie",
@@ -212,10 +208,6 @@ export default function MovieDetail() {
       return;
     }
   }, [id]);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   useEffect(() => {
     if (isFetched && data.data?.belongs_to_collection) {
