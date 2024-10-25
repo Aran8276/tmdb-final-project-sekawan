@@ -10,13 +10,14 @@ export default function Footer() {
               </a>
 
               <p className="max-w-sm mt-2 text-gray-500 dark:text-gray-400">
-                Website React.js Database Film Menggunakan Shadcn, MerakiUI,
-                Pagedone.io, TailwindCSS dibuat oleh Aran8276
+                Website React.js Database Film Menggunakan shadcn, Meraki UI,
+                Pagedone, dan Tailwind CSS dibuat oleh Aran8276 SMK Negeri 6
+                Malang.
               </p>
 
               <div className="flex mt-6 -mx-2">
                 <a
-                  href="#"
+                  href="https://www.reddit.com/user/Aran8276/"
                   className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
                   aria-label="Reddit"
                 >
@@ -46,7 +47,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://github.com/Aran8276/"
                   className="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
                   aria-label="Github"
                 >
@@ -67,73 +68,67 @@ export default function Footer() {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               <div>
                 <h3 className="text-gray-700 uppercase dark:text-white">
-                  About
+                  Tentang
                 </h3>
                 <a
-                  href="#"
+                  href="https://smkn6malang.sch.id/"
                   className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                 >
-                  Company
+                  Sekolah
                 </a>
                 <a
-                  href="#"
+                  href="https://youtube.com/@aran8276/"
                   className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                 >
-                  community
+                  YouTube
                 </a>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/aran8276/"
                   className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                 >
-                  Careers
+                  Instagram
                 </a>
               </div>
 
               <div>
                 <h3 className="text-gray-700 uppercase dark:text-white">
-                  Blog
+                  Situs
                 </h3>
                 <a
-                  href="#"
+                  href="https://aran8276.site"
                   className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                 >
-                  Tec
+                  aran8276.site
                 </a>
                 <a
-                  href="#"
+                  href="https://toyota.zahranzaidan.com"
                   className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                 >
-                  Music
-                </a>
-                <a
-                  href="#"
-                  className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
-                >
-                  Videos
+                  toyota.zahranzaidan.com
                 </a>
               </div>
 
               <div>
                 <h3 className="text-gray-700 uppercase dark:text-white">
-                  Products
+                  Projek
                 </h3>
                 <a
-                  href="#"
+                  href="https://github.com/Aran8276/e-commerce"
                   className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                 >
-                  Mega cloud
+                  E-Commerce
                 </a>
                 <a
-                  href="#"
+                  href="https://github.com/Aran8276/library-app"
                   className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                 >
-                  Aperion UI
+                  Library App
                 </a>
                 <a
-                  href="#"
+                  href="https://github.com/Aran8276/admin-siswa-auth"
                   className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                 >
-                  Meraki UI
+                  Admin Siswa Auth
                 </a>
               </div>
 
@@ -142,10 +137,10 @@ export default function Footer() {
                   Contact
                 </h3>
                 <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">
-                  +1 526 654 8965
+                  +1 234 456 7890
                 </span>
                 <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">
-                  example@email.com
+                  aran8276@gmail.com
                 </span>
               </div>
             </div>
