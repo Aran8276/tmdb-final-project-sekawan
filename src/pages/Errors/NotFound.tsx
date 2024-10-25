@@ -10,7 +10,7 @@ export default function NotFound() {
           Halaman tidak ditemukan
         </h2>
         <Link className="w-full" to="/">
-          <Button className="text-lg scale-125 py-6 w-full">Kembali ke Beranda</Button>
+          <Button className="w-full">Kembali ke Beranda</Button>
         </Link>
       </div>
     </main>

@@ -7,7 +7,7 @@ import {
   Telescope,
   /* Sheet */
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Input } from "../ui/input";
 import { baseUrl, imgBaseUrlPoster, requestHeader } from "@/Routes";
 import { ModeToggle } from "../ModeToggle";
@@ -29,12 +29,15 @@ import {
 import axios from "axios";
 import { Result } from "@/types/Search";
 import HorizontalMovieCard from "../HorizontalMovieCard";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const [data, setData] = useState<Result[]>([]);
   const context = useContext(SearchContext);
   const [isTop, setIsTop] = useState(true);
   const [search, setSearch] = useState("");
+  const [darkBgInLight, setDarkBg] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +49,18 @@ export default function Navbar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (location.pathname == "/") {
+      setDarkBg(true);
+      return;
+    }
+    setDarkBg(false);
+  }, [location]);
+
+  useEffect(() => {
+    console.log(darkBgInLight);
+  }, [darkBgInLight]);
 
   useEffect(() => {
     fetchSearch(search);
@@ -76,20 +91,23 @@ export default function Navbar() {
   }, [data]);
   return (
     <header
-      className={`text-white transition-all dark:text-white fixed flex w-full justify-between top-0 px-12 items-center pt-6 pb-5 z-10 ${
-        isTop ? "" : "backdrop-blur-md"
-      }`}
+      className={
+        (darkBgInLight ? "text-white" : "text-black") +
+        ` transition-all fixed flex w-full justify-between top-0 px-12 items-center pt-6 pb-5 z-10 ${
+          isTop ? "" : "backdrop-blur-md"
+        }`
+      }
     >
       <section>
         <nav className="hidden flex-col md:space-x-4 gap-6 text-lg font-light md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
             to="/"
-            className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground"
+            className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-white"
           >
             Beranda
           </Link>
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex space-x-3 items-center text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground">
+            <DropdownMenuTrigger className="flex space-x-3 items-center text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-white">
               <span>Film</span>
               <ChevronDown className="size-4" />
             </DropdownMenuTrigger>
@@ -169,12 +187,14 @@ export default function Navbar() {
                           );
                         })}
                       </div>
-                      <Link to={`/list?query=${search}&page=1`}>
-                        <DialogClose className="flex items-center space-x-3 float-right px-4 pt-6">
-                          <span>See more results</span>
-                          <ArrowRight />
-                        </DialogClose>
-                      </Link>
+                      <motion.div initial={{ x: -10 }} whileHover={{ x: 0 }}>
+                        <Link to={`/list?query=${search}&page=1`}>
+                          <DialogClose className="flex items-center space-x-3 float-right px-4 pt-6">
+                            <span>Lihat selengkapnya</span>
+                            <ArrowRight />
+                          </DialogClose>
+                        </Link>
+                      </motion.div>
                     </div>
                   ) : (
                     <></>
@@ -188,112 +208,4 @@ export default function Navbar() {
       </section>
     </header>
   );
-}
-
-/*
-      <nav className="pl-8 hidden flex-col md:space-x-12 gap-6 text-lg font-light md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        {/* {routeLists.map((item, index) => {
-          return (
-            <Link
-              key={index}
-              to={item.href}
-              className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground"
-            >
-              {item.label}
-            </Link>
-          );
-        })} */
-//   <Link className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground">
-//     Movie
-//   </Link>
-//   <Link className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground">
-//     New & Popular
-//   </Link>
-// </nav>
-
-// <span>Logo Here</span>
-
-{
-  /* <Sheet>
-
-  
-        <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
-          <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              to="#"
-              className="flex items-center gap-2 text-lg font-semibold"
-            >
-              <Package2 className="h-6 w-6" />
-              <span className="sr-only">Acme Inc</span>
-            </Link>
-            <Link
-              to="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Orders
-            </Link>
-            <Link
-              to="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Products
-            </Link>
-            <Link
-              to="#"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Customers
-            </Link>
-            <Link to="#" className="hover:text-foreground">
-              Settings
-            </Link>
-          </nav>
-        </SheetContent>
-      </Sheet> */
-}
-// <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-//   <form className="ml-auto flex-1 sm:flex-initial">
-//     <div className="relative">
-//       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-//       <Input
-//         type="searchString"
-//         placeholder="Cari film..."
-//         className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-//         onChange={(e) => handleSearch(e)}
-//       />
-//     </div>
-//   </form>
-//   <ModeToggle />
-{
-  /* <Link to="/link">
-          <Button variant="outline">Masuk</Button>
-        </Link> */
-}
-{
-  /* </div> */
-  /*
-  {routeLists.map((item, index) => {
-    return (
-      <Link
-        key={index}
-        to={item.href}
-        className="text-muted-foreground text-[16px] tracking-wide transition-colors hover:text-foreground"
-      >
-        {item.label}
-      </Link>
-    );
-  })}{" "}
-  */
 }

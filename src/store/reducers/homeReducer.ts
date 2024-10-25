@@ -11,6 +11,7 @@ import {
   SET_VIDEO,
 } from "../actions/homeAction";
 import { Video } from "@/types/Video";
+import { SET_IS_FAVORITE } from "../actions/detailAction";
 
 export interface Movie {
   availability: string | undefined;
@@ -37,6 +38,7 @@ export interface HomeState {
   upcoming: Upcoming | undefined;
   video: Video | undefined;
   movie: Movie | undefined;
+  favorite: boolean;
 }
 
 interface Action {
@@ -51,6 +53,7 @@ const initialState: HomeState = {
   upcoming: undefined,
   video: undefined,
   movie: undefined,
+  favorite: false,
 };
 
 export const homeReducer = (state = initialState, action: Action) => {
@@ -89,6 +92,12 @@ export const homeReducer = (state = initialState, action: Action) => {
       return {
         ...state,
         movie: action.payload,
+      };
+
+    case SET_IS_FAVORITE:
+      return {
+        ...state,
+        favorite: action.payload,
       };
 
     default:

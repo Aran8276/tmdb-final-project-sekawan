@@ -1,7 +1,7 @@
 import MovieCarousel from "@/components/MovieCarousel";
 import { getTrailerSrcById } from "@/Routes";
 import { HomeState } from "@/store/reducers/homeReducer";
-import { Plus, Popcorn } from "lucide-react";
+import { Minus, Plus, Popcorn } from "lucide-react";
 import { availabilityHandler } from "./Home";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +12,7 @@ import { useEffect } from "react";
 
 interface SelfProps {
   data: HomeState;
+  handleFavorite: (id: number | undefined, action: "add" | "delete") => void;
 }
 
 const container = {
@@ -106,14 +107,31 @@ export default function HomeView(props: SelfProps) {
                   </Button>
                 </Link>
 
-                <Button
-                  className="flex items-center space-x-3 font-medium text-lg text-black bg-white"
-                  size="lg"
-                  variant="outline"
-                >
-                  <Plus />
-                  <span>Favorit</span>
-                </Button>
+                {props.data.favorite ? (
+                  <Button
+                    className="flex items-center space-x-3 font-medium text-lg border-0 text-black bg-red-500"
+                    size="lg"
+                    variant="outline"
+                    onClick={() =>
+                      props.handleFavorite(props.data.movie?.id, "delete")
+                    }
+                  >
+                    <Minus />
+                    <span>Hapus dari Favorit</span>
+                  </Button>
+                ) : (
+                  <Button
+                    className="flex items-center space-x-3 font-medium text-lg border-0 text-black bg-white"
+                    size="lg"
+                    variant="outline"
+                    onClick={() =>
+                      props.handleFavorite(props.data.movie?.id, "add")
+                    }
+                  >
+                    <Plus />
+                    <span>Favorit</span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
