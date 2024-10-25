@@ -1,7 +1,7 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import GenreView from "./GenreView";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { baseUrl, requestHeader } from "@/Routes";
 import { setGenreData, setGenreLabel } from "@/store/actions/genreAction";
 import axios, { AxiosError } from "axios";
@@ -9,7 +9,6 @@ import { GenreDataState, GenreElement } from "@/types/Genre";
 
 export default function Genre() {
   const { id } = useParams();
-  const [isFetched, setIsFetched] = useState(false);
   const data: GenreDataState = useSelector((state: any) => state.genre);
   const dispatch = useDispatch();
   const [page, setPage] = useSearchParams();
@@ -61,7 +60,6 @@ export default function Genre() {
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([fetchGenreData(), fetchGenreList()]);
-      setIsFetched(true);
     };
 
     fetchData();

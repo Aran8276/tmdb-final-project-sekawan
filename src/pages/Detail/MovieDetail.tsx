@@ -114,14 +114,14 @@ export default function MovieDetail() {
     const url = baseUrl + `/movie/${id}/rating?session_id=${sessionIdGetter}`;
     try {
       if (action == "delete") {
-        const res = await axios.delete(url, requestHeader);
+        await axios.delete(url, requestHeader);
 
         return;
       }
       if (!value) {
         return;
       }
-      const res = await axios.post(url, { value: value }, requestHeader);
+      await axios.post(url, { value: value }, requestHeader);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         console.log(error.message);
