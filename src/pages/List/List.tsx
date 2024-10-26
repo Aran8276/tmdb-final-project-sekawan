@@ -77,6 +77,9 @@ export default function List() {
   };
 
   useEffect(() => {
+    if (searchString) {
+      return;
+    }
     const fetchData = async () => {
       await Promise.all([fetchTrending(), fetchGenres()]);
     };
