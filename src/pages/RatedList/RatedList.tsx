@@ -3,12 +3,13 @@ import RatedListView from "./RatedListView";
 import axios, { AxiosError } from "axios";
 import { baseUrl, requestHeader, sessionIdGetter } from "@/Routes";
 import { Favorite } from "@/types/Favorite";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function RatedList() {
   const [data, setData] = useState<Favorite | undefined>(undefined);
   const [page, setPage] = useSearchParams();
   const handlePage = page.get("page") ? Number(page.get("page")) : 1;
+  const navigate = useNavigate();
 
   const fetchRated = async () => {
     try {
@@ -25,6 +26,10 @@ export default function RatedList() {
   };
 
   useEffect(() => {
+    if (!sessionIdGetter) {
+      navigate("/login");
+      return;
+    }
     fetchRated();
   }, []);
 

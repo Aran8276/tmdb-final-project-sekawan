@@ -3,12 +3,13 @@ import FavoriteView from "./FavoriteView";
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { Favorite as FavoriteType } from "@/types/Favorite";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Favorite() {
   const [data, setData] = useState<FavoriteType | undefined>(undefined);
   const [page, setPage] = useSearchParams();
   const handlePage = page.get("page") ? Number(page.get("page")) : 1;
+  const navigate = useNavigate();
 
   const fetchFavorites = async () => {
     try {
@@ -25,6 +26,10 @@ export default function Favorite() {
   };
 
   useEffect(() => {
+    if (!sessionIdGetter) {
+      navigate("/login");
+      return;
+    }
     fetchFavorites();
   }, []);
 

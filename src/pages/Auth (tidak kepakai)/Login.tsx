@@ -8,7 +8,7 @@ import {
 } from "@/Routes";
 import axios, { AxiosError } from "axios";
 import LoginView from "./LoginView";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 interface User {
   username: string;
@@ -60,7 +60,8 @@ export default function Login() {
         } else if (error.response?.data.status_code == 32) {
           setErrormsg("Email anda belum diverifikasi.");
         }
-        return setErrormsg(error.response?.data);
+        setErrormsg(error.response?.data.status_message);
+        return false;
       }
     }
   };
@@ -90,26 +91,13 @@ export default function Login() {
       demoCredentials.password,
       token
     );
+    if (!verifiedToken) {
+      return;
+    }
     const sessionId = await getSessionId(verifiedToken);
     str.setItem(sessionKeyName, sessionId);
-    window.location.replace("/");
+    // window.location.replace("/");
   };
-
-  // const handleRequestToken = async () => {
-  //   if (!requestToken) {
-  //     console.log("Request token is not present, adding one");
-  //     await getRequestToken();
-  //     return;
-  //   }
-  //   console.log("Request token exists");
-  //   const parsedRequestToken: RequestToken = JSON.parse(requestToken);
-  //   if (new Date() > new Date(parsedRequestToken.expires_at)) {
-  //     console.log("Request token expired");
-  //     getRequestToken();
-  //     return;
-  //   }
-  //   console.log("Request token is all valid");
-  // };
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -131,10 +119,17 @@ export default function Login() {
       creds.password,
       token
     );
+    if (!verifiedToken) {
+      return;
+    }
     const sessionId = await getSessionId(verifiedToken);
     str.setItem(sessionKeyName, sessionId);
     window.location.replace("/");
   };
+
+  useEffect(() => {
+    console.log(errorMsg);
+  }, [errorMsg]);
 
   return (
     <LoginView
