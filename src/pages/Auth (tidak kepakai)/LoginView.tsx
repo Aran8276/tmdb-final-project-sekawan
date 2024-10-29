@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { FormEvent } from "react";
+import { Link } from "react-router-dom";
 
 interface SelfProps {
   isPwHidden: boolean;
@@ -18,6 +20,8 @@ interface SelfProps {
   setIsPwHidden: (state: boolean) => void;
   setErrormsg: (state: string) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  isLoading: boolean;
+  demoIsLoading: boolean;
 }
 
 export default function LoginView(props: SelfProps) {
@@ -77,17 +81,41 @@ export default function LoginView(props: SelfProps) {
                 <></>
               )}
             </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
+
+            {props.isLoading ? (
+              <Button type="submit" disabled className="w-full">
+                <LoadingSpinner />
+              </Button>
+            ) : (
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
+            )}
           </form>
-          <Button
-            onClick={() => props.handleLoginWithDemo()}
-            variant="outline"
-            className="mt-3 w-full"
-          >
-            Login dengan Akun Demo
-          </Button>
+          {props.demoIsLoading ? (
+            <Button
+              disabled
+              onClick={() => props.handleLoginWithDemo()}
+              variant="outline"
+              className="mt-3 w-full"
+            >
+              <LoadingSpinner />
+              {/* Login dengan Akun Demo */}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => props.handleLoginWithDemo()}
+              variant="outline"
+              className="mt-3 w-full"
+            >
+              Login dengan Akun Demo
+            </Button>
+          )}
+          <a href="https://www.themoviedb.org/signup">
+            <Button variant="outline" className="mt-3 w-full">
+              Daftar
+            </Button>
+          </a>
         </CardContent>
       </Card>
     </div>

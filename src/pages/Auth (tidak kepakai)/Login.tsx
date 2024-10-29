@@ -18,6 +18,8 @@ interface User {
 export default function Login() {
   const [isPwHidden, setIsPwHidden] = useState(true);
   const [errorMsg, setErrormsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [demoIsLoading, setDemoIsLoading] = useState(false);
   const demoCredentials: User = {
     username: demoUser,
     password: demoPass,
@@ -40,8 +42,14 @@ export default function Login() {
   const postLogin = async (
     username: string,
     password: string,
-    token: string
+    token: string,
+    target: "demo" | "login"
   ) => {
+    if (target == "login") {
+      setIsLoading(true);
+    } else if (target == "demo") {
+      setDemoIsLoading(true);
+    }
     try {
       const res = await axios.post(
         baseUrl + "/authentication/token/validate_with_login",
@@ -57,12 +65,21 @@ export default function Login() {
       if (error instanceof AxiosError) {
         if (error.response?.data.status_code == 30) {
           setErrormsg("Username atau password anda salah.");
+          setIsLoading(false);
+          setDemoIsLoading(false);
         } else if (error.response?.data.status_code == 32) {
           setErrormsg("Email anda belum diverifikasi.");
+          setIsLoading(false);
+          setDemoIsLoading(false);
         }
         setErrormsg(error.response?.data.status_message);
+        setIsLoading(false);
+        setDemoIsLoading(false);
         return false;
       }
+    } finally {
+      setIsLoading(false);
+      setDemoIsLoading(false);
     }
   };
 
@@ -89,14 +106,15 @@ export default function Login() {
     const verifiedToken = await postLogin(
       demoCredentials.username,
       demoCredentials.password,
-      token
+      token,
+      "demo"
     );
     if (!verifiedToken) {
       return;
     }
     const sessionId = await getSessionId(verifiedToken);
     str.setItem(sessionKeyName, sessionId);
-    // window.location.replace("/");
+    window.location.replace("/");
   };
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
@@ -117,7 +135,8 @@ export default function Login() {
     const verifiedToken = await postLogin(
       creds.username,
       creds.password,
-      token
+      token,
+      "login"
     );
     if (!verifiedToken) {
       return;
@@ -133,6 +152,8 @@ export default function Login() {
 
   return (
     <LoginView
+      isLoading={isLoading}
+      demoIsLoading={demoIsLoading}
       isPwHidden={isPwHidden}
       setIsPwHidden={setIsPwHidden}
       errorMsg={errorMsg}

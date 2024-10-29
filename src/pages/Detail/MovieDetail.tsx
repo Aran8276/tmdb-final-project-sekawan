@@ -18,6 +18,7 @@ import { Result } from "@/types/NowPlaying";
 import { toast } from "sonner";
 
 export default function MovieDetail() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const data: DetailDataState = useSelector((state: any) => state.detail);
   const dispatch = useDispatch();
   const [isFetched, setIsFetched] = useState(false);
@@ -199,6 +200,9 @@ export default function MovieDetail() {
   useEffect(() => {
     fetchData();
     window.scrollTo(0, 0);
+    if (sessionIdGetter) {
+      setIsLoggedIn(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -228,6 +232,7 @@ export default function MovieDetail() {
 
   return data ? (
     <MovieDetailView
+      isLoggedIn={isLoggedIn}
       handleDelete={handleDelete}
       handleRating={handleRating}
       handleFavorite={handleFavorite}

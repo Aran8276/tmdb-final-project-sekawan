@@ -14,8 +14,10 @@ import { formatDate, imgBaseUrlFull, imgBaseUrlPoster } from "@/Routes";
 import { Collection } from "@/types/Collection";
 import { Similar } from "@/types/Similar";
 import HorizontalMovieCard from "@/components/HorizontalMovieCard";
+import { Link } from "react-router-dom";
 
 interface SelfProps {
+  isLoggedIn: boolean;
   data: MovieDetailType | undefined;
   video: Result[] | undefined;
   collection: Collection | undefined;
@@ -98,34 +100,52 @@ export default function MovieDetailView(props: SelfProps) {
                 )}
               </div>
               <div className="flex flex-col mt-6 space-y-3 lg:space-x-3 lg:space-y-0 lg:flex-row">
-                {props.isFavorite ? (
-                  <Button
-                    onClick={() =>
-                      props.handleFavorite(props.data?.id, "delete")
-                    }
-                    variant="destructive"
-                  >
-                    Hapus dari Favorit
-                  </Button>
+                {props.isLoggedIn ? (
+                  <>
+                    {props.isFavorite ? (
+                      <Button
+                        onClick={() =>
+                          props.handleFavorite(props.data?.id, "delete")
+                        }
+                        variant="destructive"
+                      >
+                        Hapus dari Favorit
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          props.handleFavorite(props.data?.id, "add")
+                        }
+                        variant="outline"
+                      >
+                        Tambah ke Favorit
+                      </Button>
+                    )}
+
+                    {props.isRated ? (
+                      <Button
+                        onClick={() =>
+                          props.handleDelete(props.data ? props.data.id : 0)
+                        }
+                        className="bg-yellow-600 hover:bg-yellow-500 transition-transform"
+                      >
+                        Hapus Rating
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 ) : (
-                  <Button
-                    onClick={() => props.handleFavorite(props.data?.id, "add")}
-                    variant="outline"
-                  >
-                    Tambah ke Favorit
-                  </Button>
-                )}
-                {props.isRated ? (
-                  <Button
-                    onClick={() =>
-                      props.handleDelete(props.data ? props.data.id : 0)
-                    }
-                    className="bg-yellow-600 hover:bg-yellow-500 transition-transform"
-                  >
-                    Hapus Rating
-                  </Button>
-                ) : (
-                  <></>
+                  <Link to="/login">
+                    <Button
+                      onClick={() =>
+                        props.handleFavorite(props.data?.id, "delete")
+                      }
+                      variant="outline"
+                    >
+                      Login untuk tambahkan ke Favorit
+                    </Button>
+                  </Link>
                 )}
               </div>
             </div>
